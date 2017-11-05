@@ -3,19 +3,29 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.swing.plaf.synth.SynthSpinnerUI;
+
 import java.util.ArrayList;
 import java.io.FileWriter;
 
 public class csvtest {
 	/**
 	 * source of the code: https://www.mkyong.com/java/how-to-read-and-parse-csv-file-in-java/
+	 * source of the code2: https://www.mkyong.com/java/how-to-export-data-to-csv-file-java/
 	 * @param args
 	 */
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
+		// SE-IF 2 
 
 		String csvfile="C:\\Users\\computer\\Desktop\\csv\\test4.csv";
 		BufferedReader br = null;
@@ -65,16 +75,58 @@ public class csvtest {
 				}
 			}
 			bubbleSort(test2);
-			System.out.println(headlines);
+			/*System.out.println(headlines);
 			for(int i=0; i<=9; i++)
 			{
 				System.out.println(test2.get(i));
-			}
-			String csvoutput="C:\\Users\\computer\\Desktop\\csv\\finaltest.csv";
-			FileWriter writer = new FileWriter(csvoutput);
-			CSVutils.writeLine(writer, Arrays.asList("a", "b", "c", "d"));
+			}*/
 			
-
+			FileWriter writer = new FileWriter("C:\\Users\\computer\\Desktop\\csv\\finaltest2.csv");
+			List<String> test3 = new ArrayList<>();
+			for(int k=0; k<headlines.size(); k++)
+			{
+				test3.add(headlines.get(k));
+			}
+			String collectheadlines= test3.stream().collect(Collectors.joining(","));
+			String collect0 = test2.get(0).stream().collect(Collectors.joining(","));
+			String collect1 = test2.get(1).stream().collect(Collectors.joining(","));
+			String collect2 = test2.get(2).stream().collect(Collectors.joining(","));
+			String collect3 = test2.get(3).stream().collect(Collectors.joining(","));
+			String collect4 = test2.get(4).stream().collect(Collectors.joining(","));
+			String collect5 = test2.get(5).stream().collect(Collectors.joining(","));
+			String collect6 = test2.get(6).stream().collect(Collectors.joining(","));
+			String collect7 = test2.get(7).stream().collect(Collectors.joining(","));
+			String collect8 = test2.get(8).stream().collect(Collectors.joining(","));
+			String collect9 = test2.get(9).stream().collect(Collectors.joining(","));
+			
+			writer.write(collectheadlines);
+			writer.write("\n");
+			writer.write(collect0);
+			writer.write("\n");
+			writer.write(collect1);
+			writer.write("\n");
+			writer.write(collect2);
+			writer.write("\n");
+			writer.write(collect3);
+			writer.write("\n");
+			writer.write(collect4);
+			writer.write("\n");
+			writer.write(collect5);
+			writer.write("\n");
+			writer.write(collect6);
+			writer.write("\n");
+			writer.write(collect7);
+			writer.write("\n");
+			writer.write(collect8);
+			writer.write("\n");
+			writer.write(collect9);
+			writer.close();
+			
+			
+			
+			
+			
+		
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -106,5 +158,21 @@ public class csvtest {
 
 			}  
 		}  
+	}
+	public static ArrayList<String> crunchify(String crunchifyCSV)
+	{// not in use at the moment
+		ArrayList<String> result=new ArrayList<String>();
+		if(crunchifyCSV != null)
+		{
+			String[] splitdata=crunchifyCSV.split("\\*s,\\*s");
+			for(int i=0; i<splitdata.length; i++)
+			{
+				if(!(splitdata[i]==null) || (splitdata[i].length()==0))
+				{
+					result.add(splitdata[i].trim());
+				}
+			}
+		}
+		return result;
 	}
 }
