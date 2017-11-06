@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.swing.plaf.synth.SynthSpinnerUI;
@@ -19,6 +20,11 @@ public class seif3 {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
+		/**
+		 * here i again input a csv file (the one with the top 10 signals)
+		 * and insert the data to a collection (arraylist of arraylists)
+		 */
 		String csvFile = "C:\\Users\\computer\\Desktop\\csv\\finaltest2.csv";
 		BufferedReader br = null;
 		String line = "";
@@ -46,22 +52,61 @@ public class seif3 {
 				inner.add(input[10]);
 				mycsv.add(inner);
 			}
+			//print to check what i got
 			/*for(int i=0; i<=9; i++)
 			{
 				System.out.println(mycsv.get(i));
 			}*/
-			filter condition1=s -> s.equals("Partner");
-			filter condition2=s -> s.contains("20:11");// not working
-			filter condition3=s -> s.equals("32.09038727,34.87862948,56");//not working
-			List<ArrayList<String>> filteredStrings=filterbyID(mycsv ,condition1);
-			for(int j=0; j<filteredStrings.size(); j++)
+			
+			/**
+			 * here i filter my list by Time, ID or location
+			 * and insert the filtered list to a new list.
+			 * in this example i chose to filter by ID and Time.
+			 * when you check our assaiment you can change it and filter whatever you like :)
+			 */
+			Predicate<ArrayList<String>> condition1=s -> s.get(1).contains("Partner") & s.get(3).contains("20:11");
+			//this is example of filtering by ID and time;
+			List<ArrayList<String>> filteredStrings=filterby(mycsv ,condition1);
+			//print to check what i got
+			/*for(int j=0; j<filteredStrings.size(); j++)
 			{
 				System.out.println(filteredStrings.get(j));
+			}*/
+
+			
+			/**
+			 * here i am writing my filtered list into a kml file 
+			 * and then output it to my computer 
+			 */
+			FileWriter writer2 = new FileWriter("C:\\Users\\computer\\Desktop\\csv\\endofmatala.kml");
+			String kmlstart="<?xml version=\"1.0\" encoding=\"UTF-8\"?>   ";
+			String kmlstart2="<kml xmlns=\"http://earth.google.com/kml/2.0\">   ";
+			String kmlstart3="<Document>   ";
+			writer2.write(kmlstart);
+			writer2.write(kmlstart2);
+			writer2.write(kmlstart3);
+			String placment="<Placemark>  ";
+			String closeplacement="</Placemark>";
+			for(int k=0; k<filteredStrings.size(); k++)
+			{
+				writer2.write(placment);
+				writer2.write("<name>"+filteredStrings.get(k).get(1)+"</name>");
+				writer2.write("<description>"+filteredStrings.get(k).get(10)+"</description>");
+				writer2.write("<Point><coordinates>"+filteredStrings.get(k).get(7)+","+filteredStrings.get(k).get(6)+","+filteredStrings.get(k).get(8)+"</coordinates></Point>");
+				writer2.write(closeplacement);
 			}
-			
-			
+			String kmlclose2="</Document>";
+			String kmlclose3="</kml>";
+			writer2.write(kmlclose2);
+			writer2.write(kmlclose3);
+			writer2.close();
 
 
+
+
+/**
+ * again to catch Exception and wrong files
+ */
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -77,44 +122,18 @@ public class seif3 {
 		}
 
 	}
-	public static List<ArrayList<String>> filterbyID(List<ArrayList<String>> strings,filter condition)
+	/**
+	 * this function help me to filter the list by time,location or ID
+	 * @param strings
+	 * @param condition
+	 * @return
+	 */
+	public static List<ArrayList<String>> filterby(List<ArrayList<String>> strings, Predicate<ArrayList<String>> condition)
 	{
 		List<ArrayList<String>> output=new ArrayList<ArrayList<String>>(); //initalize empty list
 		for(int i=0; i<strings.size(); i++)
 		{
-			String s=strings.get(i).get(1);
-			if(condition.test(s)==true)
-			{
-				output.add(strings.get(i));
-			}
-		}
-		return output;
-
-	}
-	public static List<ArrayList<String>> filterbyTime(List<ArrayList<String>> strings,filter condition)
-	{
-		List<ArrayList<String>> output=new ArrayList<ArrayList<String>>(); //initalize empty list
-		for(int i=0; i<strings.size(); i++)
-		{
-			String s=strings.get(i).get(3);
-			if(condition.test(s)==true)
-			{
-				output.add(strings.get(i));
-			}
-		}
-		return output;
-
-	}
-	public static List<ArrayList<String>> filterbyLocation(List<ArrayList<String>> strings,filter condition)
-	{
-		List<ArrayList<String>> output=new ArrayList<ArrayList<String>>(); //initalize empty list
-		for(int i=0; i<strings.size(); i++)
-		{
-			String s1=strings.get(i).get(6);//langtitude
-			String s2=strings.get(i).get(7);//logtitude
-			String s3=strings.get(i).get(8);//altitude
-			String s=s1+","+s2+","+s3;
-			if(condition.test(s)==true)
+			if(condition.test(strings.get(i))==true)
 			{
 				output.add(strings.get(i));
 			}

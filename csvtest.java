@@ -24,8 +24,12 @@ public class csvtest {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
+
 		// SE-IF 2 
+		/**
+		 * this section input a WigleWifi csv file and make it csv file accoring
+		 * to what we need to do in the matala (file name of the input is "test4")
+		 */
 
 		String csvfile="C:\\Users\\computer\\Desktop\\csv\\test4.csv";
 		BufferedReader br = null;
@@ -74,13 +78,22 @@ public class csvtest {
 					test2.add(inner);
 				}
 			}
+			/**
+			 * here i used bubblesort on the list and sorted is by signal(SSID)
+			 * as requested in the matala
+			 */
 			bubbleSort(test2);
+			//print to check what i got:
 			/*System.out.println(headlines);
 			for(int i=0; i<=9; i++)
 			{
 				System.out.println(test2.get(i));
 			}*/
-			
+
+			/**
+			 * here i write the first 10 spots of my list + headlines line to 
+			 * a csv file (csvfile name is "finaltest2") and output it to my computer
+			 */
 			FileWriter writer = new FileWriter("C:\\Users\\computer\\Desktop\\csv\\finaltest2.csv");
 			List<String> test3 = new ArrayList<>();
 			for(int k=0; k<headlines.size(); k++)
@@ -98,7 +111,7 @@ public class csvtest {
 			String collect7 = test2.get(7).stream().collect(Collectors.joining(","));
 			String collect8 = test2.get(8).stream().collect(Collectors.joining(","));
 			String collect9 = test2.get(9).stream().collect(Collectors.joining(","));
-			
+
 			writer.write(collectheadlines);
 			writer.write("\n");
 			writer.write(collect0);
@@ -121,12 +134,12 @@ public class csvtest {
 			writer.write("\n");
 			writer.write(collect9);
 			writer.close();
-			
-			
-			
-			
-			
-		
+
+
+
+
+
+// this is to catch Exception and wrong files
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -142,7 +155,12 @@ public class csvtest {
 		}
 
 	}
-	static void bubbleSort(List<ArrayList<String>> arr) {  
+	/**
+	 * this is the bubble sort i made to sort my list by signals(SSID)
+	 * @param arr
+	 */
+	static void bubbleSort(List<ArrayList<String>> arr)
+	{  
 		int n = arr.size();  
 		ArrayList<String> temp=new ArrayList<String>();  
 		for(int i=0; i < n; i++){  
@@ -159,20 +177,5 @@ public class csvtest {
 			}  
 		}  
 	}
-	public static ArrayList<String> crunchify(String crunchifyCSV)
-	{// not in use at the moment
-		ArrayList<String> result=new ArrayList<String>();
-		if(crunchifyCSV != null)
-		{
-			String[] splitdata=crunchifyCSV.split("\\*s,\\*s");
-			for(int i=0; i<splitdata.length; i++)
-			{
-				if(!(splitdata[i]==null) || (splitdata[i].length()==0))
-				{
-					result.add(splitdata[i].trim());
-				}
-			}
-		}
-		return result;
-	}
+	
 }
