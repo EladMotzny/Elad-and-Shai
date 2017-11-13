@@ -20,10 +20,10 @@ public class WriteToKML {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
+
 		/**
 		 * here i again input a csv file (the one with the top 10 signals)
-		 * and insert the data into a collection (arraylist of arraylists)
+		 * and insert the data to a collection (arraylist of arraylists)
 		 * 
 		 * please note that you need to change the directory location according to
 		 * your computer for it to read and export the file successfully
@@ -42,17 +42,10 @@ public class WriteToKML {
 				// use comma as separator
 				String[] input = line.split(cvsSplitBy);
 				ArrayList<String> inner=new ArrayList<String>();
-				inner.add(input[0]);
-				inner.add(input[1]);
-				inner.add(input[2]);
-				inner.add(input[3]);
-				inner.add(input[4]);
-				inner.add(input[5]);
-				inner.add(input[6]);
-				inner.add(input[7]);
-				inner.add(input[8]);
-				inner.add(input[9]);
-				inner.add(input[10]);
+				for(int i=0; i<=10; i++)
+				{
+					inner.add(input[i]);
+				}
 				mycsv.add(inner);
 			}
 			//print to check what i got
@@ -60,14 +53,14 @@ public class WriteToKML {
 			{
 				System.out.println(mycsv.get(i));
 			}*/
-			
+
 			/**
 			 * here i filter my list by Time, ID or location
-			 * and insert the filtered list into a new list.
-			 * in this example i chose to filter by ID and Time.
+			 * and insert the filtered list to a new list.
+			 * in this example i chose to filter by Time.
 			 * when you check our assignment you can change it and filter whatever you like :)
 			 */
-			Predicate<ArrayList<String>> condition1=s -> s.get(1).contains("Partner") & s.get(3).contains("20:11");
+			Predicate<ArrayList<String>> condition1=s -> s.get(3).contains("20:20");
 			//this is example of filtering by ID and time;
 			List<ArrayList<String>> filteredStrings=filterby(mycsv ,condition1);
 			//print to check what i got
@@ -76,7 +69,7 @@ public class WriteToKML {
 				System.out.println(filteredStrings.get(j));
 			}*/
 
-			
+
 			/**
 			 * here i am writing my filtered list into a kml file 
 			 * and then output it to my computer 
@@ -100,9 +93,9 @@ public class WriteToKML {
 
 
 
-/**
- * again to catch Exception and wrong files
- */
+			/**
+			 * again to catch Exception and wrong files
+			 */
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -129,7 +122,7 @@ public class WriteToKML {
 		List<ArrayList<String>> output=new ArrayList<ArrayList<String>>(); //initalize empty list
 		for(int i=0; i<strings.size(); i++)
 		{
-			if(condition.test(strings.get(i))==true)
+			if(condition.test(strings.get(i)))
 			{
 				output.add(strings.get(i));
 			}
