@@ -23,7 +23,7 @@ public class WriteToKML {
 		
 		/**
 		 * here i again input a csv file (the one with the top 10 signals)
-		 * and insert the data to a collection (arraylist of arraylists)
+		 * and insert the data into a collection (arraylist of arraylists)
 		 * 
 		 * please note that you need to change the directory location according to
 		 * your computer for it to read and export the file successfully
@@ -63,7 +63,7 @@ public class WriteToKML {
 			
 			/**
 			 * here i filter my list by Time, ID or location
-			 * and insert the filtered list to a new list.
+			 * and insert the filtered list into a new list.
 			 * in this example i chose to filter by ID and Time.
 			 * when you check our assignment you can change it and filter whatever you like :)
 			 */

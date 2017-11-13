@@ -26,7 +26,7 @@ public class WriteToCSV {
 		// TODO Auto-generated method stub
 		
 		/**
-		 * this section input a WigleWifi csv file and make it csv file accoring
+		 * this section input a WigleWifi csv file and import a csv file accoring
 		 * to what we need to do in the assignment (file name of the input is "test4")
 		 * 
 		 * please note that you need to change the directory location according to
@@ -81,8 +81,8 @@ public class WriteToCSV {
 				}
 			}
 			/**
-			 * here i used bubblesort on the list and sorted is by signal(SSID)
-			 * as requested in the matala
+			 * here i used bubblesort on the list and sorted is by the signal(RSSI)
+			 * as requested in the assignment
 			 */
 			bubbleSort(inputCSV);
 			//print to check what i got:
@@ -93,7 +93,7 @@ public class WriteToCSV {
 			}*/
 
 			/**
-			 * here i write the first 10 spots of my list + headlines line to 
+			 * here i write the first 10 spots of my list + the headlines into 
 			 * a csv file (csvfile name is "finaltest2") and output it to my computer
 			 */
 			FileWriter writer = new FileWriter("C:\\Users\\computer\\Desktop\\csv\\finaltest2.csv");
@@ -158,7 +158,7 @@ public class WriteToCSV {
 
 	}
 	/**
-	 * this is the bubble sort i made to sort my list by signals(SSID)
+	 * this is the bubble sort i made to sort my list by signals(RSSI)
 	 * @param arr
 	 */
 	static void bubbleSort(List<ArrayList<String>> arr)
