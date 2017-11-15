@@ -178,7 +178,7 @@ public class WriteToCSV {
 			Location L=new Location(Lat,Lon,Alt,ID,Time);
 			ArrayList<WIFI> WIFIA=new ArrayList<WIFI>();
 			int countwifi=1;
-			for(int j=0; j<inputCSV.size(); j++)
+			for(int j=0; j<inputCSV.size() & countwifi<=10; j++)
 			{
 				double Lat0=Double.parseDouble(inputCSV.get(j).get(6));
 				double Lon0=Double.parseDouble(inputCSV.get(j).get(7));
