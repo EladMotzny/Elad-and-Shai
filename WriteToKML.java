@@ -22,13 +22,13 @@ public class WriteToKML {
 		// TODO Auto-generated method stub
 
 		/**
-		 * here i again input a csv file (the one with the top 10 signals)
+		 * here i input the big 46 columns CSV file
 		 * and insert the data to a collection (arraylist of arraylists)
 		 * 
 		 * please note that you need to change the directory location according to
 		 * your computer for it to read and export the file successfully
 		 */
-		String csvFile = "C:\\Users\\computer\\Desktop\\csv\\finaltest2.csv";
+		String csvFile = "C:\\Users\\computer\\Desktop\\csv\\finaltest46.csv";
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
@@ -42,14 +42,14 @@ public class WriteToKML {
 				// use comma as separator
 				String[] input = line.split(cvsSplitBy);
 				ArrayList<String> inner=new ArrayList<String>();
-				for(int i=0; i<=10; i++)
+				for(int i=0; i<input.length; i++)
 				{
 					inner.add(input[i]);
 				}
 				mycsv.add(inner);
 			}
 			//print to check what i got
-			/*for(int i=0; i<=9; i++)
+			/*for(int i=0; i<mycsv.size(); i++)
 			{
 				System.out.println(mycsv.get(i));
 			}*/
@@ -57,11 +57,11 @@ public class WriteToKML {
 			/**
 			 * here i filter my list by Time, ID or location
 			 * and insert the filtered list to a new list.
-			 * in this example i chose to filter by Time.
+			 * in this example i chose to filter by Time 20:10.
 			 * when you check our assignment you can change it and filter whatever you like :)
+			 * note that in our table Location is in indexes 0,1,2 ID index is 3 and time index is 4
 			 */
-			Predicate<ArrayList<String>> condition1=s -> s.get(3).contains("20:20");
-			//this is example of filtering by ID and time;
+			Predicate<ArrayList<String>> condition1=s -> s.get(4).contains("20:10");
 			List<ArrayList<String>> filteredStrings=filterby(mycsv ,condition1);
 			//print to check what i got
 			/*for(int j=0; j<filteredStrings.size(); j++)
@@ -72,19 +72,22 @@ public class WriteToKML {
 
 			/**
 			 * here i am writing my filtered list into a kml file 
-			 * and then output it to my computer 
+			 * and then output it to my computer.
+			 * file name is "KMLoutput46".
 			 */
-			FileWriter writer2 = new FileWriter("C:\\Users\\computer\\Desktop\\csv\\KMLoutput.kml");
+			FileWriter writer2 = new FileWriter("C:\\Users\\computer\\Desktop\\csv\\KMLoutput46.kml");
 			writer2.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>   ");
 			writer2.write("<kml xmlns=\"http://earth.google.com/kml/2.0\">   ");
 			writer2.write("<Document>   ");
+			int c=1;
 			for(int k=0; k<filteredStrings.size(); k++)
 			{
 				writer2.write("<Placemark>");
-				writer2.write("<name>"+filteredStrings.get(k).get(1)+"</name>");
-				writer2.write("<description>"+filteredStrings.get(k).get(10)+"</description>");
-				writer2.write("<Point><coordinates>"+filteredStrings.get(k).get(7)+","+filteredStrings.get(k).get(6)+","+filteredStrings.get(k).get(8)+"</coordinates></Point>");
+				writer2.write("<name>"+"point"+c+"</name>");
+				writer2.write("<description>"+filteredStrings.get(k).get(3)+"</description>");
+				writer2.write("<Point><coordinates>"+filteredStrings.get(k).get(1)+","+filteredStrings.get(k).get(0)+","+filteredStrings.get(k).get(2)+"</coordinates></Point>");
 				writer2.write("</Placemark>");
+				c++;
 			}
 			writer2.write("</Document>");
 			writer2.write("</kml>");

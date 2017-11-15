@@ -1,4 +1,4 @@
-
+ 
 public interface filter {
 	/**
 	 * this is the interface i used to filter my list

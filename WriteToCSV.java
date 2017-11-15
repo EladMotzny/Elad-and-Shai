@@ -9,7 +9,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import javax.swing.plaf.synth.SynthSpinnerUI;
@@ -30,23 +32,23 @@ public class WriteToCSV {
 		// TODO Auto-generated method stub
 
 		/**
-		 * this section input a Directory with csv files and make them one big csv file accoring
-		 * to what we need to do in the assignment (file name of the input is "test4")
+		 * this section input a Directory with csv files and inserting
+		 * the data to one big List of ArrayLists.
 		 * 
 		 * please note that you need to change the directory location according to
 		 * your computer for it to read the directory and export the file successfully
 		 */
 		List<ArrayList<String>> inputCSV=new ArrayList<ArrayList<String>>();
-		ArrayList<String> headlines=new ArrayList<String>();
-		int count=0;
+		ArrayList<String> IDlist=new ArrayList<String>();
+		ArrayList<Integer> IDsplit=new ArrayList<Integer>();
 
 		File f = new File("C:\\Users\\computer\\Desktop\\inputD"); // current directory
 
 		FilenameFilter textFilter = new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				String lowercaseName = name.toLowerCase();
-				if (lowercaseName.endsWith(".csv")) {
-					return true;
+				if (lowercaseName.endsWith(".csv")) { // check that the file is csv 
+					return true;                      // wont work if not csv
 				} else {
 					return false;
 				}
@@ -72,7 +74,7 @@ public class WriteToCSV {
 
 			try {
 
-
+				int count=0;
 				br = new BufferedReader(new FileReader(csvfile));
 				while ((line = br.readLine()) != null)
 				{
@@ -80,15 +82,20 @@ public class WriteToCSV {
 					String[] Getline = line.split(cvsSplitBy);
 					if(count==0)
 					{
+						/**
+						 * here i save the ID's in the first line of each wiglewifi file
+						 * in a String list and also its location in Integer list. it
+						 * will help me later when building the big CSV file
+						 */
+						String ID=Getline[2];
+						IDlist.add(ID);
+						IDsplit.add(inputCSV.size());
 						count++;
-						for(int i=0; i<=10; i++)
-						{
-							headlines.add(Getline[i]);
-						}
 					}
-					else if(Getline[5].equals("RSSI"))
+					else if(count==1)
 					{
-						continue;
+						//skip titles line
+						count++;
 					}
 					else
 					{
@@ -117,9 +124,17 @@ public class WriteToCSV {
 
 
 		}
+
+		//print to check what i got:
+
+		/*for(int i=0; i<inputCSV.size(); i++)
+				{
+					System.out.println(inputCSV.get(i));
+				}*/
+
 		/**
-		 * here i used bubblesort on the list and sorted is by signal(SSID)
-		 * as requested in the matala
+		 * here i used bubblesort on the list and sorted is by signals(RSSI),
+		 * it will help me later to build the big CSV file.
 		 */
 		bubbleSort(inputCSV);
 
@@ -136,33 +151,89 @@ public class WriteToCSV {
 
 	});*/
 
-		//print to check what i got:
-		/*System.out.println(headlines);
-		for(int i=0; i<=9; i++)
+		/**
+		 * here i insert all the data from the ArrayList to HashMap inorder to 
+		 * seperate location, time and ID from the wifi data. it will help me 
+		 * write the data to a 46 columns format CSV table. i wrote 2 classes, one 
+		 * for location and one for WIFI. the HashMap key is location and the values
+		 * are the top 10 signals WIFIs.	
+		 */
+		HashMap<Location,ArrayList<WIFI>> m1=new HashMap();
+		int idcounter=0;
+		for(int i=0; i<inputCSV.size(); i++)
 		{
-			System.out.println(inputCSV.get(i));
-		}*/
+			double Lat=Double.parseDouble(inputCSV.get(i).get(6));
+			double Lon=Double.parseDouble(inputCSV.get(i).get(7));
+			double Alt=Double.parseDouble(inputCSV.get(i).get(8));
+			String ID=IDlist.get(idcounter);
+			if(i==IDsplit.get(idcounter) & i!=0)
+			{
+				/**
+				 * by this "if" i can know when to swich ID to the next one
+				 */
+				idcounter++;
+				ID=IDlist.get(idcounter);
+			}
+			String Time=inputCSV.get(i).get(3);
+			Location L=new Location(Lat,Lon,Alt,ID,Time);
+			ArrayList<WIFI> WIFIA=new ArrayList<WIFI>();
+			int countwifi=1;
+			for(int j=0; j<inputCSV.size(); j++)
+			{
+				double Lat0=Double.parseDouble(inputCSV.get(j).get(6));
+				double Lon0=Double.parseDouble(inputCSV.get(j).get(7));
+				double Alt0=Double.parseDouble(inputCSV.get(j).get(8));
+				String Time0=inputCSV.get(j).get(3);
+				Location temp=new Location(Lat0,Lon0,Alt0,ID,Time0);
+				if(L.equalocation(temp)==true & countwifi<=10 )
+				{
+					String SSID=inputCSV.get(j).get(1);
+					String MAC=inputCSV.get(j).get(0);
+					int Frequency=Integer.parseInt(inputCSV.get(j).get(4));
+					int Signal=Integer.parseInt(inputCSV.get(j).get(5));
+					WIFI W=new WIFI(SSID,MAC,Frequency,Signal);
+					WIFIA.add(W);
+					countwifi++;
+				}
+			}
+			m1.put(L, WIFIA);
+		}
+		//System.out.println(m1);
+
+
+
 
 		/**
-		 * here i write the first 10 spots of my list + headlines line to 
-		 * a csv file (csvfile name is "finaltest2") and output it to my computer
+		 * here i write the map into a big 46 columns CSV table
+		 * the outputed file name is "finaltest46"
 		 */
-		FileWriter writer = new FileWriter("C:\\Users\\computer\\Desktop\\csv\\finaltest2.csv");
-		List<String> TopTen = new ArrayList<>();
-		for(int k=0; k<headlines.size(); k++)
+
+		FileWriter writer = new FileWriter("C:\\Users\\computer\\Desktop\\csv\\finaltest46.csv");
+		List<String> titles= new ArrayList<>();
+		titles.add("Latitude");
+		titles.add("Longitude");
+		titles.add("Altitude");
+		titles.add("ID");
+		titles.add("Time");
+		for(int i=1; i<=10; i++)
 		{
-			TopTen.add(headlines.get(k));
+			titles.add("SSID"+i);
+			titles.add("MAC"+i);
+			titles.add("Frequency"+i);
+			titles.add("Signal"+i);
 		}
-		String collectheadlines= TopTen.stream().collect(Collectors.joining(","));
-		writer.write(collectheadlines);
+		String collectitles= titles.stream().collect(Collectors.joining(","));
+		writer.write(collectitles);
 		writer.write("\n");
-		for(int i=0; i<=9; i++)
+		for(Entry<Location, ArrayList<WIFI>> entry : m1.entrySet())
 		{
-			String collect0 = inputCSV.get(i).stream().collect(Collectors.joining(","));
-			writer.write(collect0);
+			String collect=entry.getKey()+","+entry.getValue();
+			writer.write(collect);
 			writer.write("\n");
 		}
 		writer.close();
+
+
 	}
 
 
