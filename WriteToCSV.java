@@ -160,19 +160,23 @@ public class WriteToCSV {
 		 */
 		HashMap<Location,ArrayList<WIFI>> m1=new HashMap();
 		int idcounter=0;
+		int maxsize=IDsplit.size();
 		for(int i=0; i<inputCSV.size(); i++)
 		{
 			double Lat=Double.parseDouble(inputCSV.get(i).get(6));
 			double Lon=Double.parseDouble(inputCSV.get(i).get(7));
 			double Alt=Double.parseDouble(inputCSV.get(i).get(8));
 			String ID=IDlist.get(idcounter);
-			if(i==IDsplit.get(idcounter) & i!=0)
+			if(idcounter<maxsize-1)
 			{
-				/**
-				 * by this "if" i can know when to swich ID to the next one
-				 */
-				idcounter++;
-				ID=IDlist.get(idcounter);
+				if(i==IDsplit.get(idcounter+1) & i!=0)
+				{
+					/**
+					 * by this "if" i can know when to switch ID to the next one
+					 */
+					idcounter++;
+					ID=IDlist.get(idcounter);
+				}
 			}
 			String Time=inputCSV.get(i).get(3);
 			Location L=new Location(Lat,Lon,Alt,ID,Time);
@@ -185,7 +189,7 @@ public class WriteToCSV {
 				double Alt0=Double.parseDouble(inputCSV.get(j).get(8));
 				String Time0=inputCSV.get(j).get(3);
 				Location temp=new Location(Lat0,Lon0,Alt0,ID,Time0);
-				if(L.equalocation(temp)==true & countwifi<=10 )
+				if(L.equalocation(temp)==true & countwifi!=11 )
 				{
 					String SSID=inputCSV.get(j).get(1);
 					String MAC=inputCSV.get(j).get(0);
