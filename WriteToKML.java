@@ -1,8 +1,11 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Writer;
+import java.security.Timestamp;
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -12,6 +15,10 @@ import java.util.stream.Collectors;
 
 import javax.swing.plaf.synth.SynthSpinnerUI;
 
+import com.sun.xml.txw2.Document;
+
+import de.micromata.opengis.kml.v_2_2_0.Kml;
+import de.micromata.opengis.kml.v_2_2_0.TimeStamp;
 
 import java.util.ArrayList;
 import java.io.FileWriter;
@@ -21,6 +28,12 @@ public class WriteToKML {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+		/**
+		 * https://labs.micromata.de/projects/jak/quickstart.html
+         * https://stackoverflow.com/questions/12701364/how-to-mark-multiple-coordinates-in-kml-using-java
+		 */
+		
+		
 		/**
 		 * here i input the big 46 columns CSV file
 		 * and insert the data to a collection (arraylist of arraylists)
@@ -61,7 +74,7 @@ public class WriteToKML {
 			 * when you check our assignment you can change it and filter whatever you like :)
 			 * note that in our table Location is in indexes 0,1,2 ID index is 3 and time index is 4
 			 */
-			Predicate<ArrayList<String>> condition1=s -> s.get(4).contains("20:10");
+			Predicate<ArrayList<String>> condition1=s -> s.get(3).contains("Lenovo");
 			List<ArrayList<String>> filteredStrings=filterby(mycsv ,condition1);
 			//print to check what i got
 			/*for(int j=0; j<filteredStrings.size(); j++)
@@ -70,12 +83,8 @@ public class WriteToKML {
 			}*/
 
 
-			/**
-			 * here i am writing my filtered list into a kml file 
-			 * and then output it to my computer.
-			 * file name is "KMLoutput46".
-			 */
-			FileWriter writer2 = new FileWriter("C:\\Users\\computer\\Desktop\\csv\\KMLoutput46.kml");
+			
+		/*	FileWriter writer2 = new FileWriter("C:\\Users\\computer\\Desktop\\csv\\KMLoutput46.kml");
 			writer2.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>   ");
 			writer2.write("<kml xmlns=\"http://earth.google.com/kml/2.0\">   ");
 			writer2.write("<Document>   ");
@@ -91,10 +100,30 @@ public class WriteToKML {
 			}
 			writer2.write("</Document>");
 			writer2.write("</kml>");
-			writer2.close();
+			writer2.close();  */
+			
+			/**
+			 * here i am writing my filtered list into a kml file 
+			 * and then output it to my computer.
+			 * file name is "KMLoutputAPI".
+			 * we are using JAK library to create the kml file
+			 */
+			
+			final Kml kml=new Kml();
+			de.micromata.opengis.kml.v_2_2_0.Document doc=kml.createAndSetDocument().withName("kmlfile");
+			for(int i=0; i<filteredStrings.size(); i++)
+			{
+				//String time=filteredStrings.get(i).get(4);
+				//String timestamp=TimeConvert(time);
+				String Location=filteredStrings.get(i).get(1)+","+filteredStrings.get(i).get(0);
+				
+				doc.createAndAddPlacemark().withName("point"+i).withOpen(Boolean.TRUE).
+				createAndSetPoint().addToCoordinates(Location);
+				//doc.createAndSetTimeStamp().addToObjectSimpleExtension(timestamp);
+			}
+			kml.marshal(new File("C:\\Users\\computer\\Desktop\\csv\\KMLoutputAPI.kml"));
 
-
-
+			
 
 			/**
 			 * again to catch Exception and wrong files
@@ -132,6 +161,18 @@ public class WriteToKML {
 		}
 		return output;
 
+	}
+	
+	public static String TimeConvert(String time)
+	{
+		String time2=time.replace('/', '-');
+		String time3=time2+":00";
+		String day=time3.substring(0,2);
+		String year=time3.substring(6, 10);
+		String month=time3.substring(2, 6);
+		String rest=" "+time3.substring(11, time3.length());
+		String finaltime=year+month+day+rest;
+		return finaltime;
 	}
 
 

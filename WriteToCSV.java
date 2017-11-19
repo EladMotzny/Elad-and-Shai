@@ -152,7 +152,7 @@ public class WriteToCSV {
 	});*/
 
 		/**
-		 * here i insert all the data from the ArrayList to HashMap inorder to 
+		 * here i insert all the data from the ArrayList to HashMap in order to 
 		 * seperate location, time and ID from the wifi data. it will help me 
 		 * write the data to a 46 columns format CSV table. i wrote 2 classes, one 
 		 * for location and one for WIFI. the HashMap key is location and the values
