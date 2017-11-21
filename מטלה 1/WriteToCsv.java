@@ -27,7 +27,7 @@ public class WriteToCsv  {
 	public WriteToCsv()
 	{
 		//here u can choose the adress of the Directory
-		this.f=new File("C:\\Users\\computer\\Desktop\\inputD");
+		this.f=new File("C:\\Users\\emotz\\Desktop\\csvexamplefiles");
 	}
 	
 	/**
@@ -198,7 +198,7 @@ public class WriteToCsv  {
 	
 	static public void writethecsvtable(HashMap<Location,ArrayList<WIFI>> m) throws IOException
 	{
-		FileWriter writer = new FileWriter("C:\\Users\\computer\\Desktop\\csv\\finaltest460.csv");
+		FileWriter writer = new FileWriter("C:\\Users\\emotz\\Desktop\\csvexamplefiles\\CSVOutput.csv");
 		List<String> titles= new ArrayList<>();
 		titles.add("Latitude");
 		titles.add("Longitude");

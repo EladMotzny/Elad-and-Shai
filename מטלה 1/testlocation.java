@@ -22,5 +22,12 @@ class testlocation {
 	//Location m=new Location(34.0,32.05,50,"shlomo","20:10");
 	assertThat(m.getLat(), is(34.0));
 	}
+	
+	@Test
+	void testtoString() {
+		init();
+		String expected = "" + "34.0" + "," + "32.05" + "," + "50.0" + "," + "shlomo" + "," + "20:10" + "";
+		assertThat(expected, is(m.toString()));
+	}
 
 }

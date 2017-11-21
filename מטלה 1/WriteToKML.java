@@ -25,7 +25,7 @@ public class WriteToKML {
 	public WriteToKML()
 	{
 		//the address of the 46 columns csv table we made in the previous class
-		this.address="C:\\Users\\computer\\Desktop\\csv\\finaltest460.csv";
+		this.address="C:\\Users\\emotz\\Desktop\\csvexamplefiles\\CSVOutput.csv";
 	}
 
 	/**
@@ -121,14 +121,14 @@ public class WriteToKML {
 		for(int i=0; i<filteredlist.size(); i++)
 		{
 			String Location=filteredlist.get(i).get(1)+","+filteredlist.get(i).get(0);
-			String time=TimeConvert(filteredlist.get(i).get(4));
+			String time=filteredlist.get(i).get(4);
 			Timestamp ts=Timestamp.valueOf(time);
 			Placemark p=KmlFactory.createPlacemark();
 			p.createAndSetTimeStamp().addToTimeStampSimpleExtension(ts);
 			doc.createAndAddPlacemark().withName("point"+i).withOpen(Boolean.TRUE).withTimePrimitive(p.getTimePrimitive())
 			.createAndSetPoint().addToCoordinates(Location);
 		}
-		kml.marshal(new File("C:\\Users\\computer\\Desktop\\csv\\KMLoutputAPI3.kml"));
+		kml.marshal(new File("C:\\Users\\emotz\\Desktop\\csvexamplefiles\\KMLoutputID.kml"));
 	}
 
 
@@ -152,6 +152,12 @@ public class WriteToKML {
 		writethekmlfile(afterfilter);
 		//System.out.println(afterfilter);
 		//System.out.println(check);
+		
+		String time=afterfilter.get(2).get(4);
+		System.out.println(time);
+		
+		
+		
 
 	}
 	
@@ -181,11 +187,11 @@ public class WriteToKML {
 	public static String TimeConvert(String time)
 	{
 		String time2=time.replace('/', '-');
-		String time3=time2+":00";
+		String time3=time2;
 		String day=time3.substring(0,2);
 		String year=time3.substring(6, 10);
 		String month=time3.substring(2, 6);
-		String rest=" "+time3.substring(11, time3.length());
+		String rest=time3.substring(11, time3.length());
 		String finaltime=year+month+day+rest;
 		return finaltime;
 	}
