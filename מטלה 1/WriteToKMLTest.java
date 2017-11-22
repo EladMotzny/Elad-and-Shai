@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 class WriteToKMLTest {
 	/**
 	 * To test the files we use the files in the OutPut directory
+	 * we added another library to help us compare the kml files
 	 * https://stackoverflow.com/questions/27379059/determine-if-two-files-store-the-same-content
 	 */
 	
