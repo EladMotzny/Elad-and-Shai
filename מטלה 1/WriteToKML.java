@@ -25,7 +25,7 @@ public class WriteToKML {
 	public WriteToKML()
 	{
 		//the address of the 46 columns csv table we made in the previous class
-		this.address="C:\\Users\\emotz\\Desktop\\csvexamplefiles\\CSVOutput.csv";
+		this.address="C:\\Users\\emotz\\Desktop\\OutPut\\CSVOutput.csv";
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class WriteToKML {
 			doc.createAndAddPlacemark().withName("point"+i).withOpen(Boolean.TRUE).withTimePrimitive(p.getTimePrimitive())
 			.createAndSetPoint().addToCoordinates(Location);
 		}
-		kml.marshal(new File("C:\\Users\\emotz\\Desktop\\csvexamplefiles\\KMLoutputID.kml"));
+		kml.marshal(new File("C:\\Users\\emotz\\Desktop\\OutPut\\KMLoutputID.kml"));
 	}
 
 
@@ -153,12 +153,6 @@ public class WriteToKML {
 		//System.out.println(afterfilter);
 		//System.out.println(check);
 		
-		String time=afterfilter.get(2).get(4);
-		System.out.println(time);
-		
-		
-		
-
 	}
 	
 	/**
@@ -179,22 +173,5 @@ public class WriteToKML {
 
 	}
 	
-	/**
-	 * this function Convert the Time on the CSV file to Time in format
-	 * that fit timestamp primitive
-	 */
-	
-	public static String TimeConvert(String time)
-	{
-		String time2=time.replace('/', '-');
-		String time3=time2;
-		String day=time3.substring(0,2);
-		String year=time3.substring(6, 10);
-		String month=time3.substring(2, 6);
-		String rest=time3.substring(11, time3.length());
-		String finaltime=year+month+day+rest;
-		return finaltime;
-	}
-
 
 }

@@ -198,7 +198,7 @@ public class WriteToCsv  {
 	
 	static public void writethecsvtable(HashMap<Location,ArrayList<WIFI>> m) throws IOException
 	{
-		FileWriter writer = new FileWriter("C:\\Users\\emotz\\Desktop\\csvexamplefiles\\CSVOutput.csv");
+		FileWriter writer = new FileWriter("C:\\Users\\emotz\\Desktop\\OutPut\\CSVOutput.csv");
 		List<String> titles= new ArrayList<>();
 		titles.add("Latitude");
 		titles.add("Longitude");
