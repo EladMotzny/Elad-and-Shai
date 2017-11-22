@@ -9,5 +9,10 @@
 	<classpathentry kind="lib" path="C:/Users/emotz/Desktop/KML api/jsr173_api-1.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="lib" path="C:/Users/computer/Desktop/KML api/activation-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/computer/Desktop/KML api/JavaAPIforKml-2.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/computer/Desktop/KML api/jaxb-api-2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/computer/Desktop/KML api/jaxb-impl-2.1.17.jar"/>
+	<classpathentry kind="lib" path="C:/Users/computer/Desktop/KML api/jsr173_api-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
