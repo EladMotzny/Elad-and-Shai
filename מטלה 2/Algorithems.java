@@ -27,7 +27,7 @@ public class Algorithems {
 	 * @param Accuracy the accuracy level that you want to calculate by (between 3-10)
 	 * @return the weighted point (the WIFI point location)
 	 */
-	public Point3D getWpoint(String MAC,int Accuracy) // algoritem A
+	public Point3D getWpoint(String MAC) // algoritem A
 	{
 		List<ArrayList<String>> Mlist=new ArrayList<ArrayList<String>>();
 		List<S_I> signals=new ArrayList<S_I>();
@@ -63,8 +63,8 @@ public class Algorithems {
 			return ans;
 		}
 		S_IbubbleSort(signals);
-		double[] Warr=new double[Accuracy];
-		Point3D[] Points=new Point3D[Accuracy];
+		double[] Warr=new double[signals.size()];
+		Point3D[] Points=new Point3D[Mlist.size()];
 		for(int i=0; i<signals.size(); i++)
 		{
 			Warr[i]=1.0/(Math.pow(signals.get(i).getSignal(), 2));
@@ -73,10 +73,6 @@ public class Algorithems {
 			double Alt=Double.parseDouble(Mlist.get(signals.get(i).getIndex()).get(2));
 			Point3D point=new Point3D(Lat,Lon,Alt);
 			Points[i]=point;
-			if(i==Accuracy-1)
-			{
-				break;
-			}
 		}
 		Point3D answer=CenterW(Points,Warr);
 		return answer;
@@ -176,7 +172,7 @@ public class Algorithems {
 		Point3D[] WPoints=new Point3D[arr.length];
 		for(int i=0; i<WPoints.length; i++)
 		{
-			WPoints[i]=getWpoint(Macs[i],3);
+			WPoints[i]=getWpoint(Macs[i]);
 		}
 		Point3D answer=CenterW(WPoints,WSignals);
 		return answer;
@@ -204,23 +200,32 @@ public class Algorithems {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub
-		Algorithems A1=new Algorithems();
+	//	Algorithems A1=new Algorithems();
 		//Point3D MacLocation=A1.getWpoint("0a:8d:cb:6e:71:6d",3);
 		//System.out.println(MacLocation);	
-		M_S[] arr=new M_S[3];
-		arr[0]=new M_S("4c:60:de:d1:da:80",-70);
-		arr[1]=new M_S("6c:b0:ce:e8:2a:b0",-75);
-		arr[2]=new M_S("c4:12:f5:83:aa:0c",-80);
-		/*Point3D test1=A1.getWpoint("4c:60:de:d1:da:80", 3);
-		System.out.println(test1);
-		Point3D test2=A1.getWpoint("6c:b0:ce:e8:1a:b0", 3); // 1a should be 2a for correct MAC
-		System.out.println(test2);
-		Point3D test3=A1.getWpoint("c4:12:f5:83:aa:0c", 3);
-		System.out.println(test3);*/
-		Point3D test=A1.GetWlocation(arr);
-		System.out.println(test);
-		Point3D[] arr0= {test};
-		A1.MakeKml(arr0);
+	//	M_S[] arr=new M_S[3];
+	//	arr[0]=new M_S("4c:60:de:d1:da:80",-70);
+	//	arr[1]=new M_S("6c:b0:ce:e8:2a:b0",-75);
+	//	arr[2]=new M_S("c4:12:f5:83:aa:0c",-80);
+	//	Point3D test=A1.GetWlocation(arr);
+	//	System.out.println(test);
+	//	Point3D[] arr0= {test};
+	//	A1.MakeKml(arr0);  
+		
+		/**
+		 * boaz test for algo1
+		 */
+		Algorithems B1=new Algorithems();
+		Point3D line1=B1.getWpoint("b2:6c:ac:9f:f1:c5");
+		//System.out.println(line1);
+		M_S[] arr1=new M_S[3];
+		arr1[0]=new M_S("3c:52:82:ef:a4:8b",-60);
+		arr1[1]=new M_S("24:79:2a:2b:07:bc",-63);
+		arr1[2]=new M_S("24:79:2a:ab:07:b7",-67);
+		Point3D ans=B1.GetWlocation(arr1);
+		System.out.println(ans);
+		
+		// localtime and localdate very important!
 	}
 
 	public static void S_IbubbleSort(List<S_I> arr)

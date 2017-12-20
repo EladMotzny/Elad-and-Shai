@@ -26,7 +26,7 @@ public class WriteToKML {
 	public WriteToKML()
 	{
 		//the address of the 46 columns csv table we made in the previous class
-		this.address="C:\\Users\\computer\\Desktop\\OutPut\\CSVOutput.csv";
+		this.address="C:\\Users\\computer\\Desktop\\boazinput\\BM2_myversion.csv";
 	}
 
 	/**
