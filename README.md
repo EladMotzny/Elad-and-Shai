@@ -1,5 +1,5 @@
 # Elad-and-Shai
-Elad and Shai's repository for Object Oriented Programming class.
+**Elad and Shai's repository for Object Oriented Programming class.**
 
 In this project, the user will give the address to a folder with an assortment of WiggleWifi app files, collect the 10 best WIFI signals of each time period (along with the MAC address ,SSID and Frequency) and write it into a CSV file. It then takes the combined CSV file and write it as a KML for us to view in a program like Google Earth along with the time stamp of each location. We can use several filters if we want to see any specific detail such as: seeing routers in a specific location, seeing from a specific phone ID and between a time period.
 
@@ -17,7 +17,7 @@ You can also insert log in credentials to a specific SQL database (IP,port,user 
 
 Additional information on the different classes and function, along with a How To Run document, can be found at the doc folder of our project.
 
-API's that we used:
+**API's that we used:**
 
 JAK: https://labs.micromata.de/projects/jak.html
 
