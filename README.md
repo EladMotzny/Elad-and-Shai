@@ -18,7 +18,11 @@ You can also insert log in credentials to a specific SQL database (IP,port,user 
 Additional information on the different classes and function, along with a How To Run document, can be found at the doc folder of our project.
 
 API's that we used:
+
 JAK: https://labs.micromata.de/projects/jak.html
+
 WindowBuilder: https://www.eclipse.org/windowbuilder/download.php
+
 ObjectAid: http://www.objectaid.com/download
+
 Papyrus: https://www.eclipse.org/papyrus/download.html
