@@ -15,7 +15,7 @@ Algorithm number two will take several MAC and their best signals and returns th
 
 You can also insert log in credentials to a specific SQL database (IP,port,user name,password) and recive data from the database to add to your files.
 
-Additional information on the different classes and function, along with a How To Run document, can be found at the doc folder of our project.
+Additional information on the different classes and function, along with a How To Run document, can be found at the doc folder of our project. **WILL BE UPLOADED SOON**
 
 **API's that we used:**
 
