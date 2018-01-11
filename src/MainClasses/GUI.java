@@ -21,11 +21,15 @@ import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.sql.*;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -41,6 +45,7 @@ import Filters.GuiFilters;
 import Filters.SaveFilters;
 import Objects.Location;
 import Objects.M_S;
+import Objects.MySQL;
 import Objects.Point3D;
 import Objects.WIFI;
 
@@ -76,7 +81,7 @@ public class GUI extends Thread {
 
 
 	static GUI Glist=new GUI();
-	
+
 	static boolean Timecheckbox=false;
 	static boolean Locationcheckbox=false;
 	static boolean IDcheckbox=false;
@@ -87,13 +92,19 @@ public class GUI extends Thread {
 	static boolean IDNot=false;
 	static boolean NoneButt=false;
 	private Text MacForAlg1;
-	
+
 	static boolean TerminateThread=false;
-	
+
 	static Thread t1;
-	
+
 	static ObjectInputStream kelet;
 	static SaveFilters upload;
+	private Text IP;
+	private Text Port;
+	private Text Username;
+	private Text Password;
+	private Text DB;
+	private Text Table;
 
 	/**
 	 * Launch the application.
@@ -101,7 +112,7 @@ public class GUI extends Thread {
 	 * @throws InterruptedException 
 	 */
 	public static void main(String[] args) throws InterruptedException {	
-	
+
 		try {	
 			GUI window = new GUI();
 			window.open();
@@ -117,7 +128,7 @@ public class GUI extends Thread {
 	public void open() throws InterruptedException {
 		Display display = Display.getDefault();
 		Shell shell = new Shell();
-		shell.setSize(800,1000);
+		shell.setSize(1200,1000);
 		shell.setText("SWT Application");
 
 		FolderPath = new Text(shell, SWT.BORDER);
@@ -135,10 +146,10 @@ public class GUI extends Thread {
 
 				try {
 					String FolderAddress=FolderPath.getText();
-					
+
 					t1=new Thread(new Watcher(FolderAddress));
 					t1.start();
-					
+
 					WriteToCsv TakeFolder=new WriteToCsv(FolderAddress);
 					Glist.PreData=TakeFolder.createlistofdata();
 					HashMap<Location,ArrayList<WIFI>> m1=new HashMap();
@@ -148,6 +159,7 @@ public class GUI extends Thread {
 					Glist.Data=getData.inputheCSVfile();
 					Glist.DataTemp=Glist.Data;
 					File del=new File(System.getProperty("user.home") + "\\Desktop\\GuiOutput.csv");
+					del.delete();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					return;
@@ -1426,9 +1438,111 @@ public class GUI extends Thread {
 		btnNewButton.setBounds(683, 190, 91, 39);
 		btnNewButton.setText("Use Saved Filter");
 
+		Label lblGetDataFrom = new Label(shell, SWT.NONE);
+		lblGetDataFrom.setBounds(914, 39, 176, 15);
+		lblGetDataFrom.setText("Get Data From SQL data base");
+
+		Label lblIp = new Label(shell, SWT.NONE);
+		lblIp.setBounds(914, 80, 24, 15);
+		lblIp.setText("IP:");
+
+		IP = new Text(shell, SWT.BORDER);
+		IP.setBounds(955, 77, 109, 21);
+
+		Label lblPort = new Label(shell, SWT.NONE);
+		lblPort.setBounds(914, 104, 34, 15);
+		lblPort.setText("Port:");
+
+		Port = new Text(shell, SWT.BORDER);
+		Port.setBounds(955, 101, 109, 21);
+
+		Label lblUserName = new Label(shell, SWT.NONE);
+		lblUserName.setBounds(914, 133, 65, 15);
+		lblUserName.setText("User name:");
+
+		Username = new Text(shell, SWT.BORDER);
+		Username.setBounds(985, 130, 80, 21);
+
+		Label lblPassword = new Label(shell, SWT.NONE);
+		lblPassword.setBounds(914, 169, 65, 15);
+		lblPassword.setText("Password:");
+
+		Password = new Text(shell, SWT.BORDER);
+		Password.setBounds(984, 166, 80, 21);
+
+		Label lblDataBase = new Label(shell, SWT.NONE);
+		lblDataBase.setBounds(914, 195, 65, 15);
+		lblDataBase.setText("Data base:");
+
+		DB = new Text(shell, SWT.BORDER);
+		DB.setBounds(984, 192, 80, 21);
+
+		Label lblTable = new Label(shell, SWT.NONE);
+		lblTable.setBounds(914, 233, 55, 15);
+		lblTable.setText("Table:");
+
+		Table = new Text(shell, SWT.BORDER);
+		Table.setBounds(985, 232, 79, 21);
+
+		Button btnConnect = new Button(shell, SWT.NONE);
+		btnConnect.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				MySQL sql=new MySQL(IP.getText(),Username.getText(),Password.getText(),Port.getText(),DB.getText());
+				try {
+					//1) get a connection to the databse
+					Connection myConn = DriverManager.getConnection(sql.getURL(),sql.getUser(),sql.getPassword());
+					//2) create a statement
+					Statement mystmt = myConn.createStatement();
+					//3) execute SQL query
+					ResultSet myrs = mystmt.executeQuery("select * from "+ Table.getText());
+					//4) process the result set
+					List<ArrayList<String>> table=new ArrayList<ArrayList<String>>();
+					while(myrs.next())
+					{
+						ArrayList<String> inner=new ArrayList<String>();
+						String time=myrs.getString("time");
+						String device=myrs.getString("device");
+						String lat=myrs.getString("lat");
+						String lon=myrs.getString("lon");
+						String alt=myrs.getString("alt");
+						inner.add(lat);
+						inner.add(lon);
+						inner.add(alt);
+						inner.add(device);
+						inner.add(time);
+				/*		for(int i=0; i<Integer.parseInt(myrs.getString("number")); i++)
+						{
+							String mac=myrs.getString("mac"+i);
+							String signal=myrs.getString("rssi"+i);
+							String fake="...";
+							inner.add(fake);
+							inner.add(mac);
+							inner.add(fake);
+							inner.add(fake);
+						}  */  
+						table.add(inner);
+					}
+					for(int i=0; i<table.size(); i++)
+					{
+						if(!(Glist.Data.contains(table.get(i))))
+						{
+							Glist.Data.add(table.get(i));
+						}
+					}
+
+				}
+				catch(Exception exc){
+					exc.printStackTrace();
+				}
+			}
+		});
+		btnConnect.setBounds(955, 276, 75, 25);
+		btnConnect.setText("Connect");
+
 		shell.open();
 		shell.layout();
-		
+
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {	
 				display.sleep();
@@ -1439,6 +1553,6 @@ public class GUI extends Thread {
 		{
 			t1.interrupt();
 		}
-		
+
 	}
 }
