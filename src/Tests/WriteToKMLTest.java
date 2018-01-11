@@ -18,6 +18,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
+import org.omg.Messaging.SyncScopeHelper;
 
 import MainClasses.WriteToKML;
 

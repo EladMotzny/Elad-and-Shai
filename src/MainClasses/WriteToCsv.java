@@ -294,7 +294,7 @@ public class WriteToCsv  {
 	 */
 	public void writethecsvtable(HashMap<Location,ArrayList<WIFI>> m) throws IOException
 	{
-		FileWriter writer = new FileWriter("C:\\Users\\computer\\Desktop\\OutPut\\GuiOutput.csv");
+		FileWriter writer = new FileWriter(System.getProperty("user.home") + "\\Desktop\\GuiOutput.csv");
 		List<String> titles= new ArrayList<>();
 		titles.add("Latitude");
 		titles.add("Longitude");
@@ -328,7 +328,7 @@ public class WriteToCsv  {
 	 */
 	public void writethecsvtable(List<ArrayList<String>> Data) throws IOException
 	{
-		FileWriter writer = new FileWriter("C:\\Users\\computer\\Desktop\\OutPut\\GuiOutput.csv");
+		FileWriter writer = new FileWriter(System.getProperty("user.home") + "\\Desktop\\GuiOutput.csv");
 		List<String> titles= new ArrayList<>();
 		titles.add("Latitude");
 		titles.add("Longitude");
@@ -367,7 +367,7 @@ public class WriteToCsv  {
 		WriteToCsv test=new WriteToCsv();
 		List<ArrayList<String>> testCSV=test.createlistofdata();
 		HashMap<Location,ArrayList<WIFI>> m1=test.createMap(testCSV);
-		System.out.println(m1.size());
+		//System.out.println(m1.size());
 	//	test.writethecsvtable(m1);
 	}
 

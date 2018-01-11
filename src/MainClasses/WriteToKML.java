@@ -34,7 +34,7 @@ public class WriteToKML {
 	public WriteToKML()
 	{
 		//the address of the 46 columns csv table we made in the previous class
-		this.address="C:\\\\Users\\\\computer\\\\Desktop\\\\OutPut\\\\GuiOutput.csv";
+		this.address=System.getProperty("user.home") + "\\Desktop\\GuiOutput.csv";
 	}
 	public WriteToKML(String address)
 	{
@@ -158,7 +158,7 @@ public class WriteToKML {
 	 */
 	public void writethecsvtable(List<ArrayList<String>> Data) throws IOException
 	{
-		FileWriter writer = new FileWriter("C:\\Users\\computer\\Desktop\\OutPut\\GuiOutput2.csv");
+		FileWriter writer = new FileWriter(System.getProperty("user.home") + "\\Desktop\\GuiOutput2.csv");
 		for(int i=0; i<Data.size(); i++)
 		{
 			String Collect="";
@@ -256,17 +256,15 @@ public class WriteToKML {
 		for(int i=0; i<filteredlist.size(); i++)
 		{
 			String Location=filteredlist.get(i).get(1)+","+filteredlist.get(i).get(0);
-		/*	String time=filteredlist.get(i).get(4);
-			DateFormat formatter;
-			formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-			Date date=(Date) formatter.parse(time);
-			java.sql.Timestamp ts = new Timestamp(date.getTime());   */
+			String time=filteredlist.get(i).get(4);
+			String realtime=TimeConvert(time);
+			Timestamp ts=Timestamp.valueOf(realtime);
 			Placemark p=KmlFactory.createPlacemark();
-		//	p.createAndSetTimeStamp().addToTimeStampSimpleExtension(ts);
-			doc.createAndAddPlacemark().withName("point"+i).withOpen(Boolean.TRUE)
+			p.createAndSetTimeStamp().addToTimeStampSimpleExtension(ts);
+			doc.createAndAddPlacemark().withName("point"+i).withOpen(Boolean.TRUE).withTimePrimitive(p.getTimePrimitive())
 			.createAndSetPoint().addToCoordinates(Location);
 		}
-		kml.marshal(new File("C:\\Users\\computer\\Desktop\\OutPut\\KMLGUIoutput.kml"));
+		kml.marshal(new File(System.getProperty("user.home") + "\\Desktop\\KMLGUIoutput.kml"));
 	}
 
 	public int RouterCount(List<ArrayList<String>> list) {
@@ -284,7 +282,7 @@ public class WriteToKML {
 		return MacCount.size();
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, ParseException {
 
 		/**
 		 * some tests to see that my functions work properly
@@ -300,10 +298,16 @@ public class WriteToKML {
 		 * to filter by Time, enter the Time by String and number 4!
 		 * to filter by Location, enter String like this: "Lat,Lon" and choose other number than 3 or 4!
 		 */
-		//	test.writethekmlfile(afterfilter2);
+		test.writethekmlfile(check);
 		//System.out.println(afterfilter.size());
 		//System.out.println(check.size());
-		System.out.println(test.RouterCount(check));
+		//System.out.println(test.RouterCount(check));
+		/*	String time="27/10/2017 16:21";
+		String realtime=TimeConvert(time);
+		System.out.println(time);
+		System.out.println(realtime);
+		Timestamp ts=Timestamp.valueOf(realtime);
+		System.out.println(ts);  */
 	}
 
 	/**
@@ -341,15 +345,25 @@ public class WriteToKML {
 		double Dlon=Math.pow((Lon1-Lon2), 2);
 		return Math.sqrt(Dlat+Dlon);
 	}
-	
+
 	public static String TimeConvert(String time)
 	{
-		String ans="";
-		String year=time.substring(6, 10);
-		String day=time.substring(0,2);
-		String month=time.substring(3,5);
-		ans=ans+year+"-"+month+"-"+day+" "+time.substring(11);
-		return ans;
+		if(time.length()==16)
+		{
+			String year=time.substring(6, 10);
+			String day=time.substring(0,2);
+			String month=time.substring(3,5);
+			String ans=year+"-"+month+"-"+day+" "+time.substring(11)+":00";
+			return ans;
+		}
+		else
+		{
+			String year=time.substring(0,4);
+			String day=time.substring(8,10);
+			String month=time.substring(5,7);
+			String ans=year+"-"+month+"-"+day+" "+time.substring(11);
+			return ans;
+		}
 	}
 
 }

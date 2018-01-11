@@ -147,6 +147,7 @@ public class GUI extends Thread {
 					WriteToKML getData=new WriteToKML();
 					Glist.Data=getData.inputheCSVfile();
 					Glist.DataTemp=Glist.Data;
+					File del=new File(System.getProperty("user.home") + "\\Desktop\\GuiOutput.csv");
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					return;
@@ -201,6 +202,7 @@ public class GUI extends Thread {
 				WriteToCsv savecsv=new WriteToCsv();
 				try {
 					savecsv.writethecsvtable(Glist.Data);
+					MessageDialog.openConfirm(shell, "Alert!", "File saved as a CSV file");
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -217,6 +219,7 @@ public class GUI extends Thread {
 				WriteToKML makekml=new WriteToKML();
 				try {
 					makekml.writethekmlfile(Glist.Data);
+					MessageDialog.openConfirm(shell, "Alert!", "File saved as a KML file");
 				} catch (FileNotFoundException | ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -928,7 +931,7 @@ public class GUI extends Thread {
 					save.AndOrNone="Or";
 				}
 
-				String filename= "C:\\Users\\computer\\Desktop\\OutPut\\filters.bin";
+				String filename= System.getProperty("user.home") + "\\Desktop\\filters.bin";
 				try {
 					ObjectOutputStream os=new ObjectOutputStream(new FileOutputStream(filename));
 					os.writeObject(save);
