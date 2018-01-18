@@ -15,7 +15,7 @@ Algorithm number two will take several MAC and their best signals and returns th
 
 You can also insert log in credentials to a specific SQL database (IP,port,user name,password) and recive data from the database to add to your files. additianlly when you click "connect", another thread will start watch the SQL database you connected to and check if the database changed. if it did, our data will automaticly updated.
 
-Additional information on the different classes and function, along with a How To compile and Run document,class Diagram, can be found at the doc folder of our project.
+Additional information on the different classes and function, along with a How To compile and Run 1,2 documents and class Diagram can be found at the doc folder of our project.
 
 **API's that we used:**
 
